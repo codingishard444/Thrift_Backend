@@ -1,28 +1,43 @@
 const express = require('express');
-const app = express();
-const authRoutes = require('./routes/auth');
-const protectedRoute = require('./routes/protectedRoutes');
-const { ApolloServer } = require('@apollo/server')
-const { expressMiddleware } = require('@apollo/server/express4')
-
-app.use(express.json());
-app.use('/auth', authRoutes);
-app.use('/protected', protectedRoute);
+const { ApolloServer } = require('@apollo/server');
+const { expressMiddleware } = require('@apollo/server/express4');
+const typeDefs = require('./models/User');
+const { resolvers } = require('./routes/auth');
+const rateLimit = require('./rate-limiter/rate-limiter');
+const User = require('./models/userModel'); // Make sure you have this model
+const mongoose = require('mongoose');
 const PORT = 3000;
 
-async function startServer(){
+async function startServer() {
+    const app = express();
+
+    try {
+        await mongoose.connect('mongodb+srv://bryanteffendi:bryant1234@cluster0.qvdrv.mongodb.net/ThriftStore', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('✅ MongoDB Connected');
+    } catch (err) {
+        console.error('❌ MongoDB Connection Error:', err);
+        process.exit(1); // Exit if DB connection fails
+    }
+    // Create Apollo Server
     const server = new ApolloServer({
         typeDefs,
         resolvers
-    })
+    });
 
     await server.start();
 
-    const app = express()
-    app.use(express.json())
-    app.use("/graphql",expressMiddleware(server))
-    app.listen(PORT,()=>{
-        console.log(`Server running at port ${PORT}`)
-    })
+    // Apply middleware
+    app.use(express.json());
+    app.use('/graphql', rateLimit, expressMiddleware(server));
+
+    app.listen(PORT, () => {
+        console.log(`Server running at port ${PORT}`);
+    });
 }
-startServer();
+
+startServer().catch(err => {
+    console.error('Failed to start server:', err);
+});

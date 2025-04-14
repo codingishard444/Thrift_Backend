@@ -13,7 +13,7 @@ app.use(cors());
 let client;
 
 (async () => {
-    client = await Client.connect("https://7aba1af8c8b3e66df0.gradio.live"); // remember to change this frequently, after the link expires
+    client = await Client.connect("https://e12f6b739202a06c16.gradio.live"); // remember to change this frequently, after the link expires
     console.log("Connected to Gradio API");
 })();
 

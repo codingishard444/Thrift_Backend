@@ -1,39 +1,87 @@
-const express = require('express')
-const router = express.Router()
-const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const logger = require('../logger/authLogger');
+const User = require('../models/userModel'); // Make sure you import your User model
 
-router.post('/register', async (req, res) => {
-    try {
-    const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashedPassword });
-    await user.save();
-    res.status(201).json({ message: 'User registered successfully' });
-    } catch (error) {
-    res.status(500).json({ error: 'Registration failed' });
+const resolvers = {
+    Query: {
+        users: async () => {
+            return await User.find({});
+        },
+        user: async (_, { id }) => {
+            return await User.findById(id);
+        },
+        userauth: async (_, { username, password }) => {
+            const user = await User.findOne({ username });
+            if (!user) {
+                throw new Error('Authentication failed');
+            }
+            const passwordMatch = await bcrypt.compare(password, user.password);
+            if (!passwordMatch) {
+                throw new Error('Authentication failed');
+            }
+            const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
+                expiresIn: '1h',
+            });
+            return { token, user };
+        },
+        logs: () => {
+            const fs = require('fs');
+            const path = require('path');
+            try {
+                const logFile = path.join(__dirname, '../logger/auth-logs.log');
+                const logData = fs.readFileSync(logFile, 'utf8');
+                const logLines = logData.split('\n').filter(line => line.trim() !== '');
+                const last10Logs = logLines.slice(-10).reverse();
+                return last10Logs;
+            } catch (err) {
+                console.error('Error reading log file:', err);
+                throw new Error('Failed to read log file');
+            }
+        }
+    },
+    Mutation: {
+        createUser: async (_, { username, password }) => {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const user = new User({ username, password: hashedPassword });
+            await user.save();
+            return user;
+        },
+        register: async (_, { username, password }) => {
+            try {
+                const hashedPassword = await bcrypt.hash(password, 10);
+                const user = new User({ username, password: hashedPassword });
+                await user.save();
+                logger.info(`New user registered: ${username}`);
+                return user;
+            } catch (error) {
+                logger.error(`Registration failed for user: ${username}`);
+                throw new Error('Registration failed');
+            }
+        },
+        login: async (_, { username, password }) => {
+            try {
+                const user = await User.findOne({ username });
+                if (!user) {
+                    logger.warn(`Failed login attempt for user: ${username}`);
+                    throw new Error('Authentication failed');
+                }
+                const passwordMatch = await bcrypt.compare(password, user.password);
+                if (!passwordMatch) {
+                    logger.warn(`Failed login attempt for user: ${username}`);
+                    throw new Error('Authentication failed');
+                }
+                const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
+                    expiresIn: '1h',
+                });
+                logger.info(`Login successful for user: ${username}`);
+                return { token, user };
+            } catch (error) {
+                logger.error(`Login error for user: ${username}`);
+                throw new Error('Login failed');
+            }
+        }
     }
-    });
-   
-    router.post('/login', async (req, res) => {
-    try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    if (!user) {
-    return res.status(401).json({ error: 'Authentication failed' });
-    }
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-    return res.status(401).json({ error: 'Authentication failed' });
-    }
-    const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
-    expiresIn: '1h',
-    });
-    res.status(200).json({ token });
-    } catch (error) {
-    res.status(500).json({ error: 'Login failed' });
-    }
-    });
-   
-module.exports = router;
+};
+
+module.exports = { resolvers };
