@@ -1,4 +1,4 @@
 node_modules/
 application.properties
 .env
-.auth-logs.log
+auth-logs.log
