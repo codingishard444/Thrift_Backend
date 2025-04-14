@@ -32,7 +32,7 @@ async function startServer() {
 
     // Apply middleware
     app.use(express.json());
-    app.use('/graphql', rateLimit, expressMiddleware(server));
+    app.use('/public', rateLimit, expressMiddleware(server));
 
     app.listen(PORT, () => {
         console.log(`Server running at port ${PORT}`);
