@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
@@ -12,7 +13,7 @@ async function startServer() {
     const app = express();
 
     try {
-        await mongoose.connect('mongodb+srv://bryanteffendi:bryant1234@cluster0.qvdrv.mongodb.net/ThriftStore', {
+        await mongoose.connect(process.env.MONGO_ENV, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
