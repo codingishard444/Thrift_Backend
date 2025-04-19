@@ -11,8 +11,8 @@ const resolvers = {
         user: async (_, { id }) => {
             return await User.findById(id);
         },
-        userauth: async (_, { username, password }) => {
-            const user = await User.findOne({ username });
+        userauth: async (_, { email, password }) => {
+            const user = await User.findOne({ email });
             if (!user) {
                 throw new Error('Authentication failed');
             }
@@ -41,43 +41,43 @@ const resolvers = {
         }
     },
     Mutation: {
-        createUser: async (_, { username, password }) => {
+        createUser: async (_, { email, password }) => {
             const hashedPassword = await bcrypt.hash(password, 10);
-            const user = new User({ username, password: hashedPassword });
+            const user = new User({ email, password: hashedPassword });
             await user.save();
             return user;
         },
-        register: async (_, { username, password }) => {
+        register: async (_, { email, password }) => {
             try {
                 const hashedPassword = await bcrypt.hash(password, 10);
-                const user = new User({ username, password: hashedPassword });
+                const user = new User({ email, password: hashedPassword });
                 await user.save();
-                logger.info(`New user registered: ${username}`);
+                logger.info(`New user registered: ${email}`);
                 return user;
             } catch (error) {
-                logger.error(`Registration failed for user: ${username}`);
+                logger.error(`Registration failed for user: ${email}`);
                 throw new Error('Registration failed');
             }
         },
-        login: async (_, { username, password }) => {
+        login: async (_, { email, password }) => {
             try {
-                const user = await User.findOne({ username });
+                const user = await User.findOne({ email });
                 if (!user) {
-                    logger.warn(`Failed login attempt for user: ${username}`);
+                    logger.warn(`Failed login attempt for user: ${email}`);
                     throw new Error('Authentication failed');
                 }
                 const passwordMatch = await bcrypt.compare(password, user.password);
                 if (!passwordMatch) {
-                    logger.warn(`Failed login attempt for user: ${username}`);
+                    logger.warn(`Failed login attempt for user: ${email}`);
                     throw new Error('Authentication failed');
                 }
                 const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
                     expiresIn: '1h',
                 });
-                logger.info(`Login successful for user: ${username}`);
+                logger.info(`Login successful for user: ${email}`);
                 return { token, user };
             } catch (error) {
-                logger.error(`Login error for user: ${username}`);
+                logger.error(`Login error for user: ${email}`);
                 throw new Error('Login failed');
             }
         }
