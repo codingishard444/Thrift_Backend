@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const logger = require('../logger/authLogger');
 const User = require('../models/userModel'); // Make sure you import your User model
 
-const resolvers = {
+const userResolvers = {
     Query: {
         users: async () => {
             return await User.find({});
@@ -84,4 +84,4 @@ const resolvers = {
     }
 };
 
-module.exports = { resolvers };
+module.exports = { userResolvers };

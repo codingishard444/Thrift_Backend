@@ -3,7 +3,8 @@ const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const typeDefs = require('./models/User');
-const { resolvers } = require('./resolvers/userResolvers');
+const { userResolvers } = require('./resolvers/userResolvers');
+const { productResolvers } = require('./resolvers/productResolvers')
 const rateLimit = require('./rate-limiter/rate-limiter');
 const User = require('./models/userModel'); // Make sure you have this model
 const mongoose = require('mongoose');
@@ -25,7 +26,10 @@ async function startServer() {
     // Create Apollo Server
     const server = new ApolloServer({
         typeDefs,
-        resolvers
+        resolvers: {
+            ...userResolvers,    // Spread the user resolvers
+            ...productResolvers  // Spread the product resolvers
+        }
     });
 
     await server.start();
