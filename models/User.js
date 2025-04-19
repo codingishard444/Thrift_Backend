@@ -1,7 +1,7 @@
 const typeDefs = `#graphql
     type User {
         id: ID!
-        username: String!
+        email: String!
         password: String!
     }
 
@@ -13,14 +13,14 @@ const typeDefs = `#graphql
     type Query {
         users: [User]
         user(id:ID!): User
-        userauth(username:String!,password:String!): AuthPayload
+        userauth(email:String!,password:String!): AuthPayload
         logs: [String]
     }
 
     type Mutation {
-        createUser(username:String!,password:String!): User
-        register(username:String!,password:String!): User
-        login(username:String!,password:String!): AuthPayload
+        createUser(email:String!,password:String!): User
+        register(email:String!,password:String!): User
+        login(email:String!,password:String!): AuthPayload
     }
 `;
 
