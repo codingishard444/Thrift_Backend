@@ -20,7 +20,7 @@ const userResolvers = {
             if (!passwordMatch) {
                 throw new Error('Authentication failed');
             }
-            const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
+            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
                 expiresIn: '1h',
             });
             return { token, user };
@@ -71,7 +71,7 @@ const userResolvers = {
                     logger.warn(`Failed login attempt for user: ${email}`);
                     throw new Error('Authentication failed');
                 }
-                const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
+                const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
                     expiresIn: '1h',
                 });
                 logger.info(`Login successful for user: ${email}`);

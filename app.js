@@ -23,21 +23,25 @@ async function startServer() {
         console.error('❌ MongoDB Connection Error:', err);
         process.exit(1); // Exit if DB connection fails
     }
-    // Create Apollo Server
+    // here is combining/merging all the resolvers
+    const resolvers = {
+        Query: {
+          ...userResolvers.Query,
+          ...productResolvers.Query
+        },
+        Mutation: {
+          ...userResolvers.Mutation,
+          ...productResolvers.Mutation
+        },
+      };
     const server = new ApolloServer({
         typeDefs,
-        resolvers: {
-            ...userResolvers,    // Spread the user resolvers
-            ...productResolvers  // Spread the product resolvers
-        }
+        resolvers
     });
-
     await server.start();
 
-    // Apply middleware
     app.use(express.json());
     app.use('/public', rateLimit, expressMiddleware(server));
-
     app.listen(PORT, () => {
         console.log(`Server running at port ${PORT}`);
     });
