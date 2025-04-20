@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
-const typeDefs = require('./models/User');
+const typeDefs = require('./models/typeDefs');
 const { userResolvers } = require('./resolvers/userResolvers');
 const { productResolvers } = require('./resolvers/productResolvers')
 const rateLimit = require('./rate-limiter/rate-limiter');
