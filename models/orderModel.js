@@ -2,14 +2,14 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-    order_id:{
+    customer_id:{
         type: String
     },
     product_id:{
         type: String
     },
     quantity:{
-        type: int
+        type: Number
     },
     total_price:{
         type: Number

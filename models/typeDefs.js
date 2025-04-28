@@ -16,6 +16,13 @@ const typeDefs = `#graphql
         Total_stock: Int!
     }
 
+    type Order {
+        customer_id: String!
+        product_id: String!
+        quantity: Int!
+        total_price: Int!
+    }
+
     type AuthPayload {
         token: String!
         user: User!
@@ -28,6 +35,8 @@ const typeDefs = `#graphql
         logs: [String]
         getAllProducts: [Product]
         getProduct(id: ID!): Product
+        orders: [Order]
+        order(id: ID!): Order
     }
 
     type Mutation {
@@ -43,6 +52,7 @@ const typeDefs = `#graphql
             sold_amount: Int,
             Total_stock: Int!
         ): Product
+        createOrder(customer_id:String!,product_id:String!,quantity:Int!,total_price:Int!): Order
     }
 `;
 

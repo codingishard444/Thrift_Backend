@@ -8,6 +8,7 @@ const { productResolvers } = require('./resolvers/productResolvers')
 const rateLimit = require('./rate-limiter/rate-limiter');
 const User = require('./models/userModel'); // Make sure you have this model
 const mongoose = require('mongoose');
+const { orderResolvers } = require('./resolvers/orderResolvers');
 const PORT = 3000;
 
 async function startServer() {
@@ -15,8 +16,6 @@ async function startServer() {
 
     try {
         await mongoose.connect(process.env.MONGO_ENV, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
         });
         console.log('✅ MongoDB Connected');
     } catch (err) {
@@ -27,11 +26,13 @@ async function startServer() {
     const resolvers = {
         Query: {
           ...userResolvers.Query,
-          ...productResolvers.Query
+          ...productResolvers.Query,
+          ...orderResolvers.Query
         },
         Mutation: {
           ...userResolvers.Mutation,
-          ...productResolvers.Mutation
+          ...productResolvers.Mutation,
+          ...orderResolvers.Mutation
         },
       };
     const server = new ApolloServer({
