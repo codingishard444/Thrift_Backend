@@ -1,3 +1,4 @@
+// User Model done
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -16,7 +17,6 @@ const userSchema = new mongoose.Schema({
     gender: {
         type: String,
         enum: ['male', 'female','kids'],
-        required: true
     }
 });
 

@@ -1,9 +1,9 @@
+// Admin model done
 const mongoose = require('mongoose');
 
 const adminSchema = new mongoose.Schema({
     fullname:{
-        type: String,
-        required: true
+        type: String
     },
     email: {
         type: String,

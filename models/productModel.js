@@ -1,3 +1,4 @@
+// Product model done, may require small revisions based on what we can do
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
