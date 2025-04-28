@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const typeDefs = require('./models/typeDefs');
@@ -9,6 +10,7 @@ const rateLimit = require('./rate-limiter/rate-limiter');
 const User = require('./models/userModel'); // Make sure you have this model
 const mongoose = require('mongoose');
 const { orderResolvers } = require('./resolvers/orderResolvers');
+const authMiddleware = require('./middleware/authMiddleware');
 const PORT = 3000;
 
 async function startServer() {
@@ -41,8 +43,15 @@ async function startServer() {
     });
     await server.start();
 
+    app.use(cors());
     app.use(express.json());
-    app.use('/public', rateLimit, expressMiddleware(server));
+    app.use(authMiddleware);
+    app.use('/public', rateLimit, expressMiddleware(server, {
+        context: async ({ req }) => {
+            console.log('Context user:', req.user);
+            return { user: req.user };
+        },
+    }));
     app.listen(PORT, () => {
         console.log(`Server running at port ${PORT}`);
     });

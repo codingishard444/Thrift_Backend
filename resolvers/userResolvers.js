@@ -5,6 +5,16 @@ const User = require('../models/userModel'); // Make sure you import your User m
 
 const userResolvers = {
     Query: {
+        protectedRoute: async (_,__,context) => {
+            if (!context.user) {
+                throw new Error('Unauthorized');
+            }
+            const user = await User.findById(context.user.userId); 
+            if (!user) {
+                throw new Error('User not found');
+            }
+            return user;
+        },
         users: async () => {
             return await User.find({});
         },

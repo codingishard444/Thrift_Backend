@@ -29,6 +29,7 @@ const typeDefs = `#graphql
     }
 
     type Query {
+        protectedRoute: User
         users: [User]
         user(id:ID!): User
         userauth(email:String!,password:String!): AuthPayload
