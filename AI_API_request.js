@@ -1,36 +1,40 @@
 import express from "express";
 import cors from "cors";
-import { Client } from "@gradio/client";
+import fetch from "node-fetch"; // You'll need to install this: npm install node-fetch
 
 const app = express();
 const PORT = 3000;
+const API_URL = "https://clever-preferably-bird.ngrok-free.app/generate";
 
-// Middleware
 app.use(express.json());
 app.use(cors());
 
-// Initialize Gradio Client
-let client;
-
-(async () => {
-    client = await Client.connect("https://e12f6b739202a06c16.gradio.live"); // remember to change this frequently, after the link expires
-    console.log("Connected to Gradio API");
-})();
-
-app.post("/generate-text", async (req, res) => {
+app.post("/generate-response", async (req, res) => {
     try {
         const { prompt } = req.body;
-
+        
         if (!prompt) {
             return res.status(400).json({ error: "Prompt is required" });
         }
-
-        // Send request to Gradio API
-        const result = await client.predict("/predict", { 
-            user_message: [prompt]  // Correct format
+        
+        // Send request to your ngrok-exposed FastAPI endpoint
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+                user_message: prompt 
+            }),
         });
-
-        res.json({ response: result.data });
+        
+        if (!response.ok) {
+            throw new Error(`API returned status code ${response.status}`);
+        }
+        
+        const data = await response.json();
+        res.json({ response: data.response });
+        
     } catch (error) {
         console.error("Error:", error.message);
         res.status(500).json({ error: "Failed to process request" });
@@ -40,4 +44,5 @@ app.post("/generate-text", async (req, res) => {
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Forwarding requests to ${API_URL}`);
 });
