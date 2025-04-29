@@ -13,7 +13,10 @@ const orderSchema = new mongoose.Schema({
     },
     total_price:{
         type: Number
-    }
+    },
+    size_type:{
+        type: String
+    },
 });
 
 module.exports = mongoose.model('Order', orderSchema);

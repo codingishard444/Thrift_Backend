@@ -20,7 +20,13 @@ const typeDefs = `#graphql
         customer_id: String!
         product_id: String!
         quantity: Int!
-        total_price: Int!
+        total_price: Float!
+    }
+    
+    type Size {
+        product_id: String!
+        size_type: String!
+        stock_amount: Int!
     }
 
     type Admin {
@@ -65,7 +71,7 @@ const typeDefs = `#graphql
             sold_amount: Int,
             Total_stock: Int!
         ): Product
-        createOrder(customer_id:String!,product_id:String!,quantity:Int!,total_price:Int!): Order
+        createOrder(product_id:String!,quantity:Int!,size_type:String!): Order
     }
 `;
 

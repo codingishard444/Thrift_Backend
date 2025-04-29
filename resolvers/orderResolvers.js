@@ -1,6 +1,7 @@
 const Order = require('../models/orderModel')
 const logger = require('../logger/authLogger')
-
+const Product = require('../models/productModel')
+const Size = require('../models/sizeModel')
 const orderResolvers ={
     Query:{
         orders: async () => {
@@ -24,21 +25,32 @@ const orderResolvers ={
             }
         },
     },
-    Mutation:{
-    createOrder: async (_, { customer_id,product_id,quantity,total_price }) => {
-            try {
-                const order = new Order({ customer_id,product_id,quantity,total_price });
-                await order.save();
-                logger.info(`New Order placed: ${customer_id}, ${product_id}`);
-                return order;
-            } catch (error) {
-                console.error(error)
-                logger.error(`Order placement failed: ${customer_id}, ${product_id}`);
-                throw new Error('Order placement failed');
-            }
+    Mutation: {
+        createOrder: async (_, args, context) => {
+          const { product_id, quantity,size_type } = args;
+          try {
+            const purchasedProduct = await Product.findById(product_id);
+            const total_price = purchasedProduct.price*(1 - (purchasedProduct.discount_rate / 100)) * quantity;
+            purchasedProduct.sold_amount += quantity;
+            await purchasedProduct.save();
+            const size = await Size.findOne({ product_id, size_type });
+            size.stock_amount -= quantity;
+            await size.save();
+            const customer_id = context.user.userId;
+            logger.info(`Creating order for user: ${customer_id}`);
+      
+            const order = new Order({ customer_id, product_id,total_price, quantity,size_type });
+            await order.save();
+      
+            logger.info(`New Order placed: ${customer_id}, ${product_id}`);
+            return order;
+          } catch (error) {
+            console.error(error);
+            logger.error(`Order placement failed: ${error.message}`);
+            throw new Error('Order placement failed');
+          }
         }
-    
-    }
+      }      
 
 }
 module.exports = { orderResolvers };

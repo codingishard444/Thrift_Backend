@@ -10,7 +10,7 @@ const sizeSchema = new mongoose.Schema({
         enum: ['S', 'M','L','XL','XXL']
     },
     stock_amount:{
-        type: int
+        type: Number
     }
 });
 
