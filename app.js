@@ -11,6 +11,7 @@ const rateLimit = require('./rate-limiter/rate-limiter');
 const User = require('./models/userModel'); // Make sure you have this model
 const mongoose = require('mongoose');
 const { orderResolvers } = require('./resolvers/orderResolvers');
+const { wishListResolvers } = require('./resolvers/wishListResolvers')
 const authMiddleware = require('./middleware/authMiddleware');
 const PORT = 3000;
 
@@ -31,13 +32,15 @@ async function startServer() {
           ...userResolvers.Query,
           ...productResolvers.Query,
           ...orderResolvers.Query,
-          ...adminResolvers.Query
+          ...adminResolvers.Query,
+          ...wishListResolvers.Query
         },
         Mutation: {
           ...userResolvers.Mutation,
           ...productResolvers.Mutation,
           ...orderResolvers.Mutation,
-          ...adminResolvers.Mutation
+          ...adminResolvers.Mutation,
+          ...wishListResolvers.Mutation
         },
       };
     const server = new ApolloServer({

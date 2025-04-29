@@ -7,6 +7,9 @@ const wishListSchema = new mongoose.Schema({
     },
     product_id:{
         type: String
+    },
+    product_name:{
+        type: String
     }
 });
 

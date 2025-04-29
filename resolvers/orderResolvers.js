@@ -27,6 +27,9 @@ const orderResolvers ={
     },
     Mutation: {
         createOrder: async (_, args, context) => {
+          if (!context.user) {
+            throw new Error('Unauthorized');
+          } else {
           const { product_id, quantity,size_type } = args;
           try {
             const purchasedProduct = await Product.findById(product_id);
@@ -49,6 +52,7 @@ const orderResolvers ={
             logger.error(`Order placement failed: ${error.message}`);
             throw new Error('Order placement failed');
           }
+        }
         }
       }      
 

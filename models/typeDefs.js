@@ -34,6 +34,12 @@ const typeDefs = `#graphql
         email: String!
         password: String!
     }
+    type WishList {
+        id:ID!
+        customer_id: String!
+        product_id: String!
+        product_name: String!
+    }
 
     type AuthPayload {
         token: String!
@@ -54,6 +60,8 @@ const typeDefs = `#graphql
         getProduct(id: ID!): Product
         getAllorders: [Order]
         getOrderbyId(id: ID!): Order
+        getAllWishLists: [WishList]
+        getWishListByCustomerId(customer_id: String!): [WishList]
     }
 
     type Mutation {
@@ -85,6 +93,7 @@ const typeDefs = `#graphql
             stock_amount: Int!
         ): Size
         createOrder(product_id:String!,quantity:Int!,size_type:String!): Order
+        addToWishList(product_id: String!): WishList
     }
 `;
 
