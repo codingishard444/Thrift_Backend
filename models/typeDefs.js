@@ -53,7 +53,7 @@ const typeDefs = `#graphql
             sold_amount: Int,
             Total_stock: Int!
         ): Product
-        createOrder(customer_id:String!,product_id:String!,quantity:Int!,total_price:Int!): Order
+        createOrder(product_id:String!,quantity:Int!,total_price:Int!): Order
     }
 `;
 
