@@ -71,6 +71,16 @@ const typeDefs = `#graphql
             sold_amount: Int,
             Total_stock: Int!
         ): Product
+        updateProduct(
+            product_id: String!,
+            product_name: String!,
+            discount_rate: Float,
+        ): Product
+        updateProductSizeStock(
+            product_id: String!,
+            size_type: String!,
+            stock_amount: Int!
+        ): Size
         createOrder(product_id:String!,quantity:Int!,size_type:String!): Order
     }
 `;
