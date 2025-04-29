@@ -4,7 +4,24 @@ const Size = require('../models/sizeModel');
 
 const productResolvers ={
     Query:{
-    
+    getAllProducts: async () => {
+        try {
+            const products = await Product.find();
+            return products;
+        } catch (error) {
+            logger.error('Failed to fetch products');
+            throw new Error('Failed to fetch products');
+        }
+        },
+    getProduct: async (_, { id }) => {
+        try {
+            const product = await Product.findById(id);
+            return product;
+        } catch(error) {
+            logger.error(`Product not found: ${id}`);
+            throw new Error('Product not found');
+        }
+    }
     },
     Mutation:{
     createProduct: async (_, { product_name,gender, price,discount_rate,category_type }) => {
