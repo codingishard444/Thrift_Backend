@@ -4,10 +4,10 @@ const Product = require('../models/productModel')
 const Size = require('../models/sizeModel')
 const orderResolvers ={
     Query:{
-        orders: async () => {
+        getAllorders: async () => {
             return await Order.find({})
         },
-        order: async(_, { id }) => {
+        getOrderbyId: async(_, { id }) => {
             return await Order.findById(id)
         },
         logs: () => {

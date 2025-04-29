@@ -52,8 +52,8 @@ const typeDefs = `#graphql
         adminauth(email:String!,password:String!): AuthPayload
         getAllProducts: [Product]
         getProduct(id: ID!): Product
-        orders: [Order]
-        order(id: ID!): Order
+        getAllorders: [Order]
+        getOrderbyId(id: ID!): Order
     }
 
     type Mutation {
