@@ -6,6 +6,7 @@ const { expressMiddleware } = require('@apollo/server/express4');
 const typeDefs = require('./models/typeDefs');
 const { userResolvers } = require('./resolvers/userResolvers');
 const { productResolvers } = require('./resolvers/productResolvers')
+const { adminResolvers } = require('./resolvers/adminResolvers')
 const rateLimit = require('./rate-limiter/rate-limiter');
 const User = require('./models/userModel'); // Make sure you have this model
 const mongoose = require('mongoose');
@@ -29,12 +30,14 @@ async function startServer() {
         Query: {
           ...userResolvers.Query,
           ...productResolvers.Query,
-          ...orderResolvers.Query
+          ...orderResolvers.Query,
+          ...adminResolvers.Query
         },
         Mutation: {
           ...userResolvers.Mutation,
           ...productResolvers.Mutation,
-          ...orderResolvers.Mutation
+          ...orderResolvers.Mutation,
+          ...adminResolvers.Mutation
         },
       };
     const server = new ApolloServer({

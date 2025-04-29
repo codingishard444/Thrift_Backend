@@ -23,6 +23,12 @@ const typeDefs = `#graphql
         total_price: Int!
     }
 
+    type Admin {
+        id: ID!
+        email: String!
+        password: String!
+    }
+
     type AuthPayload {
         token: String!
         user: User!
@@ -34,6 +40,10 @@ const typeDefs = `#graphql
         user(id:ID!): User
         userauth(email:String!,password:String!): AuthPayload
         logs: [String]
+        protectedRoute_A: Admin
+        admins: [Admin]
+        admin(id:ID!): Admin
+        adminauth(email:String!,password:String!): AuthPayload
         getAllProducts: [Product]
         getProduct(id: ID!): Product
         orders: [Order]
@@ -44,6 +54,8 @@ const typeDefs = `#graphql
         createUser(email:String!,password:String!): User
         register(email:String!,password:String!): User
         login(email:String!,password:String!): AuthPayload
+        createAdmin(email:String!,password:String!): Admin
+        login_A(email:String!,password:String!): AuthPayload
         createProduct(
             product_name: String!,
             gender: String!,
