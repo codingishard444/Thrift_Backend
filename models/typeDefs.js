@@ -67,9 +67,7 @@ const typeDefs = `#graphql
             gender: String!,
             price: Float!,
             discount_rate: Float,
-            category_type: String!,
-            sold_amount: Int,
-            Total_stock: Int!
+            category_type: String!
         ): Product
         updateProduct(
             product_id: String!,
@@ -77,6 +75,11 @@ const typeDefs = `#graphql
             discount_rate: Float,
         ): Product
         updateProductSizeStock(
+            product_id: String!,
+            size_type: String!,
+            stock_amount: Int!
+        ): Size
+        AddProductSize(
             product_id: String!,
             size_type: String!,
             stock_amount: Int!
