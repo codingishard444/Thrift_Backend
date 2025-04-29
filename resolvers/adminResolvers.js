@@ -9,31 +9,17 @@ const adminResolvers = {
             if (!context.admin) {
                 throw new Error('Unauthorized');
             }
-            const admin = await Admin.findById(context.admin.userId); 
+            const admin = await Admin.findById(context.admin.adminId); 
             if (!admin) {
                 throw new Error('User not found');
             }
             return admin;
         },
-        admins: async () => {
+        getAlladmins: async () => {
             return await Admin.find({});
         },
-        admin: async (_, { id }) => {
+        getAdminbyId: async (_, { id }) => {
             return await Admin.findById(id);
-        },
-        adminauth: async (_, { email, password }) => {
-            const admin = await Admin.findOne({ email });
-            if (!admin) {
-                throw new Error('Authentication failed');
-            }
-            const passwordMatch = await bcrypt.compare(password, admin.password);
-            if (!passwordMatch) {
-                throw new Error('Authentication failed');
-            }
-            const token = jwt.sign({ admId: admin._id }, process.env.JWT_SECRET, {
-                expiresIn: '1h',
-            });
-            return { token, user };
         },
         logs: () => {
             const fs = require('fs');
@@ -69,7 +55,7 @@ const adminResolvers = {
                     logger.warn(`Failed login attempt for admin: ${email}`);
                     throw new Error('Authentication failed');
                 }
-                const token = jwt.sign({ admId: admin._id }, process.env.JWT_SECRET, {
+                const token = jwt.sign({ adminId: admin._id }, process.env.JWT_SECRET, {
                     expiresIn: '1h',
                 });
                 logger.info(`Login successful for admin: ${email}`);

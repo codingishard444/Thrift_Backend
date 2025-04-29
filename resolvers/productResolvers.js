@@ -13,7 +13,7 @@ const productResolvers ={
             throw new Error('Failed to fetch products');
         }
         },
-    getProduct: async (_, { id }) => {
+    getProductbyId: async (_, { id }) => {
         try {
             const product = await Product.findById(id);
             return product;
@@ -33,6 +33,23 @@ const productResolvers ={
             } catch (error) {
                 logger.error(`Product insertion failed: ${product_name}`);
                 throw new Error('Product insertion failed');
+            }
+        },
+    updateProduct: async (_, { product_id, product_name, discount_rate }) => {
+            try {
+                const product = await Product.findById(product_id);
+                if (!product) {
+                    logger.error(`Product not found: ${id}`);
+                    throw new Error('Product not found');
+                }
+                product.product_name = product_name
+                product.discount_rate = discount_rate
+                await product.save();
+                logger.info(`Product updated: ${product_name}`);
+                return product;
+            } catch (error) {
+                logger.error(`Product update failed: ${id}`);
+                throw new Error('Product update failed');
             }
         },
     updateProductSizeStock: async (_, { product_id, size_type, stock_amount }) => {

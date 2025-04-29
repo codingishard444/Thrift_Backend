@@ -15,25 +15,11 @@ const userResolvers = {
             }
             return user;
         },
-        users: async () => {
+        getAllusers: async () => {
             return await User.find({});
         },
-        user: async (_, { id }) => {
+        getUserById: async (_, { id }) => {
             return await User.findById(id);
-        },
-        userauth: async (_, { email, password }) => {
-            const user = await User.findOne({ email });
-            if (!user) {
-                throw new Error('Authentication failed');
-            }
-            const passwordMatch = await bcrypt.compare(password, user.password);
-            if (!passwordMatch) {
-                throw new Error('Authentication failed');
-            }
-            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-                expiresIn: '1h',
-            });
-            return { token, user };
         },
         logs: () => {
             const fs = require('fs');
@@ -51,12 +37,6 @@ const userResolvers = {
         }
     },
     Mutation: {
-        createUser: async (_, { email, password }) => {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const user = new User({ email, password: hashedPassword });
-            await user.save();
-            return user;
-        },
         register: async (_, { email, password }) => {
             try {
                 const hashedPassword = await bcrypt.hash(password, 10);

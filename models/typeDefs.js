@@ -48,16 +48,14 @@ const typeDefs = `#graphql
 
     type Query {
         protectedRoute: User
-        users: [User]
-        user(id:ID!): User
-        userauth(email:String!,password:String!): AuthPayload
+        getAllusers: [User]
+        getUserById(id:ID!): User
         logs: [String]
         protectedRoute_A: Admin
-        admins: [Admin]
-        admin(id:ID!): Admin
-        adminauth(email:String!,password:String!): AuthPayload
+        getAlladmins: [Admin]
+        getAdminbyId(id:ID!): Admin
         getAllProducts: [Product]
-        getProduct(id: ID!): Product
+        getProductbyId(id: ID!): Product
         getAllorders: [Order]
         getOrderbyId(id: ID!): Order
         getAllWishLists: [WishList]
@@ -65,7 +63,6 @@ const typeDefs = `#graphql
     }
 
     type Mutation {
-        createUser(email:String!,password:String!): User
         register(email:String!,password:String!): User
         login(email:String!,password:String!): AuthPayload
         createAdmin(email:String!,password:String!): Admin
