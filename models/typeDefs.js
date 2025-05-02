@@ -28,7 +28,7 @@ const typeDefs = `#graphql
         size_type: String!
         stock_amount: Int!
     }
-
+    
     type Admin {
         id: ID!
         email: String!
@@ -60,6 +60,9 @@ const typeDefs = `#graphql
         getOrderbyId(id: ID!): Order
         getAllWishLists: [WishList]
         getWishListByCustomerId(customer_id: String!): [WishList]
+        getOrderByCustomerId(customer_id: String!): [Order]
+        getOrderbyProductId(product_id: String!): [Order]
+        getProductbySize(product_id: String!, size_type: String!): Size
     }
 
     type Mutation {

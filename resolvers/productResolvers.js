@@ -21,7 +21,16 @@ const productResolvers ={
             logger.error(`Product not found: ${id}`);
             throw new Error('Product not found');
         }
-    }
+        },
+    getProductbySize: async (_, { product_id,size_type }) => {
+        try {
+            const size = await Size.findOne({product_id,size_type});
+            return size;
+        } catch (error){
+            logger.error(`Size not found: ${size_type}`);
+            throw new Error('Size not found');
+        }
+    },
     },
     Mutation:{
     createProduct: async (_, { product_name,gender, price,discount_rate,category_type }) => {

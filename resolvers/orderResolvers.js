@@ -24,6 +24,30 @@ const orderResolvers ={
                 throw new Error('Failed to read log file');
             }
         },
+        getOrderByCustomerId: async (_, { customer_id }) => {
+            try {
+                const orders = await Order.find({ customer_id });
+                if (!orders || orders.length === 0) {
+                    throw new Error('No orders found for this customer ID');
+                }
+                return orders;
+              } catch (error) {
+                console.error('Error fetching orders:', error);
+                throw new Error('Failed to fetch orders');
+              }
+            },
+        getOrderbyProductId: async (_, { product_id }) => {
+          try {
+            const orders = await Order.find({ product_id });
+            if (!orders || orders.length === 0) {
+                throw new Error('No orders found for this product ID');
+            }
+            return orders;
+          } catch (error){
+            console.error('Error fetching orders:', error);
+            throw new Error('Failed to fetch orders');
+          }
+        }
     },
     Mutation: {
         createOrder: async (_, args, context) => {
