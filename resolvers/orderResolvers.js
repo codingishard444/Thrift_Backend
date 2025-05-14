@@ -24,8 +24,12 @@ const orderResolvers ={
                 throw new Error('Failed to read log file');
             }
         },
-        getOrderByCustomerId: async (_, { customer_id }) => {
+        getOrderByCustomerId: async (_,__,context) => {
+            if (!context.user) {
+            throw new Error('Unauthorized');
+            } 
             try {
+                const customer_id = context.user.userId;
                 const orders = await Order.find({ customer_id });
                 if (!orders || orders.length === 0) {
                     throw new Error('No orders found for this customer ID');
@@ -37,6 +41,9 @@ const orderResolvers ={
               }
             },
         getOrderbyProductId: async (_, { product_id }) => {
+          if (!context.admin) {
+                throw new Error('Unauthorized');
+          }
           try {
             const orders = await Order.find({ product_id });
             if (!orders || orders.length === 0) {

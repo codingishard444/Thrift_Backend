@@ -34,6 +34,9 @@ const productResolvers ={
     },
     Mutation:{
     createProduct: async (_, { product_name,gender, price,discount_rate,category_type }) => {
+            if (!context.admin) {
+                throw new Error('Unauthorized');
+            }
             try {
                 const product = new Product({ product_name,gender, price,discount_rate,category_type });
                 await product.save();
@@ -45,6 +48,9 @@ const productResolvers ={
             }
         },
     updateProduct: async (_, { product_id, product_name, discount_rate }) => {
+            if (!context.admin) {
+                throw new Error('Unauthorized');
+            }
             try {
                 const product = await Product.findById(product_id);
                 if (!product) {
@@ -62,6 +68,9 @@ const productResolvers ={
             }
         },
     updateProductSizeStock: async (_, { product_id, size_type, stock_amount }) => {
+            if (!context.admin) {
+                throw new Error('Unauthorized');
+            }
             try {
                 const updatedSizestock = await Size.findOne({ product_id, size_type });
                 updatedSizestock.stock_amount += stock_amount;
@@ -76,6 +85,9 @@ const productResolvers ={
             }
         },
     AddProductSize: async (_, { product_id, size_type, stock_amount }) => {
+            if (!context.admin) {
+                throw new Error('Unauthorized');
+            }
             try {
                 const size = new Size({ product_id, size_type, stock_amount });
                 await size.save();

@@ -59,8 +59,8 @@ const typeDefs = `#graphql
         getAllorders: [Order]
         getOrderbyId(id: ID!): Order
         getAllWishLists: [WishList]
-        getWishListByCustomerId(customer_id: String!): [WishList]
-        getOrderByCustomerId(customer_id: String!): [Order]
+        getWishListByCustomerId: [WishList]
+        getOrderByCustomerId: [Order]
         getOrderbyProductId(product_id: String!): [Order]
         getProductbySize(product_id: String!, size_type: String!): Size
     }

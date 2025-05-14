@@ -13,8 +13,12 @@ const wishListResolvers = {
                 throw new Error('Failed to fetch wish lists');
             }
         },
-        getWishListByCustomerId: async (_, { customer_id }) => {
+        getWishListByCustomerId: async (_,__,context) => {
+        if (!context.user) {
+                throw new Error('Unauthorized');
+        }
         try {
+            const customer_id = context.user.userId
             const wishListData = await wishList.find({ customer_id });
             return wishListData;
         } catch (error) {
