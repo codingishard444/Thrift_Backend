@@ -14,7 +14,7 @@ const { orderResolvers } = require('./resolvers/orderResolvers');
 const { wishListResolvers } = require('./resolvers/wishListResolvers')
 const authMiddleware = require('./middleware/authMiddleware');
 const Adminauthenticate = require('./middleware/AdminauthMiddleware');
-const PORT = 3000;
+const PORT = 8080;
 
 async function startServer() {
     const app = express();
@@ -50,7 +50,10 @@ async function startServer() {
     });
     await server.start();
 
-    app.use(cors());
+    app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+    }));
     app.use(express.json());
     // app.use(authMiddleware);
     app.use((req, res, next) => {

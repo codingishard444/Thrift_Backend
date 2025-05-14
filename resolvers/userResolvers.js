@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const logger = require('../logger/authLogger');
-const User = require('../models/userModel'); // Make sure you import your User model
+const User = require('../models/userModel'); 
 
 const userResolvers = {
     Query: {

@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import fetch from "node-fetch"; // You'll need to install this: npm install node-fetch
+import fetch from "node-fetch"; 
 
 const app = express();
 const PORT = 3000;
@@ -17,7 +17,7 @@ app.post("/generate-response", async (req, res) => {
             return res.status(400).json({ error: "Prompt is required" });
         }
         
-        // Send request to your ngrok-exposed FastAPI endpoint
+        
         const response = await fetch(API_URL, {
             method: "POST",
             headers: {
@@ -41,7 +41,7 @@ app.post("/generate-response", async (req, res) => {
     }
 });
 
-// Start the server
+
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
     console.log(`Forwarding requests to ${API_URL}`);
