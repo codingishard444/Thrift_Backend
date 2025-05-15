@@ -14,7 +14,7 @@ const { orderResolvers } = require('./resolvers/orderResolvers');
 const { wishListResolvers } = require('./resolvers/wishListResolvers')
 const authMiddleware = require('./middleware/authMiddleware');
 const Adminauthenticate = require('./middleware/AdminauthMiddleware');
-const PORT = 8080;
+const PORT = 9090;
 
 async function startServer() {
     const app = express();
