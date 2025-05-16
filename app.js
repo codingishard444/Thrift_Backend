@@ -49,9 +49,12 @@ async function startServer() {
         resolvers
     });
     await server.start();
-
+    const allowedOrigins = [
+        'http://localhost:3000',
+        'http://localhost:8080'
+    ];
     app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: allowedOrigins,
     credentials: true
     }));
     app.use(express.json());
