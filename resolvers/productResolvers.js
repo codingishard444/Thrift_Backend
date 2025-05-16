@@ -33,12 +33,12 @@ const productResolvers ={
     },
     },
     Mutation:{
-    createProduct: async (_, { product_name,gender, price,discount_rate,category_type }) => {
+    createProduct: async (_, { product_name,gender, price,discount_rate,category_type,imagePath },context) => {
             if (!context.admin) {
                 throw new Error('Unauthorized');
             }
             try {
-                const product = new Product({ product_name,gender, price,discount_rate,category_type });
+                const product = new Product({ product_name,gender, price,discount_rate,category_type,imagePath });
                 await product.save();
                 logger.info(`New Product released: ${product_name}`);
                 return product;
@@ -47,7 +47,7 @@ const productResolvers ={
                 throw new Error('Product insertion failed');
             }
         },
-    updateProduct: async (_, { product_id, product_name, discount_rate }) => {
+    updateProduct: async (_, { product_id, product_name, discount_rate },context) => {
             if (!context.admin) {
                 throw new Error('Unauthorized');
             }
@@ -67,7 +67,7 @@ const productResolvers ={
                 throw new Error('Product update failed');
             }
         },
-    updateProductSizeStock: async (_, { product_id, size_type, stock_amount }) => {
+    updateProductSizeStock: async (_, { product_id, size_type, stock_amount },context) => {
             if (!context.admin) {
                 throw new Error('Unauthorized');
             }
@@ -84,7 +84,7 @@ const productResolvers ={
                 throw new Error('Product not found');
             }
         },
-    AddProductSize: async (_, { product_id, size_type, stock_amount }) => {
+    AddProductSize: async (_, { product_id, size_type, stock_amount },context) => {
             if (!context.admin) {
                 throw new Error('Unauthorized');
             }

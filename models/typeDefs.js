@@ -75,7 +75,8 @@ const typeDefs = `#graphql
             gender: String!,
             price: Float!,
             discount_rate: Float,
-            category_type: String!
+            category_type: String!,
+            imagePath:String!
         ): Product
         updateProduct(
             product_id: String!,

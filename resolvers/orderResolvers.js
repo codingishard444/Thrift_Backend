@@ -40,7 +40,7 @@ const orderResolvers ={
                 throw new Error('Failed to fetch orders');
               }
             },
-        getOrderbyProductId: async (_, { product_id }) => {
+        getOrderbyProductId: async (_, { product_id },context) => {
           if (!context.admin) {
                 throw new Error('Unauthorized');
           }
