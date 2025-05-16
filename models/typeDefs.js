@@ -14,6 +14,7 @@ const typeDefs = `#graphql
         category_type: String!
         sold_amount: Int!
         Total_stock: Int!
+        imagePath: String!
     }
 
     type Order {
