@@ -66,7 +66,7 @@ async function startServer() {
             });
         });
     });
-    app.use('/public', rateLimit, expressMiddleware(server, {
+    app.use('/public',expressMiddleware(server, {
         context: async ({ req }) => {
             console.log('Context user:', req.user);
             console.log('Context Admin:', req.admin);
