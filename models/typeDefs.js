@@ -84,6 +84,7 @@ const typeDefs = `#graphql
             product_name: String!,
             discount_rate: Float,
         ): Product
+        deleteProduct(product_id:String!):String
         updateProductSizeStock(
             product_id: String!,
             size_type: String!,

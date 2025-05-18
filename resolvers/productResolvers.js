@@ -67,6 +67,22 @@ const productResolvers ={
                 throw new Error('Product update failed');
             }
         },
+    deleteProduct:async(_,{ product_id },context) =>{
+            if(!context.admin){
+                throw new Error('Unauthorized');
+            }
+            try {
+                const Deletedproduct = await Product.findByIdAndDelete(product_id);
+                if (!Deletedproduct){
+                    logger.error(`Product not found: ${product_id}`);
+                    throw new Error('Product not found');
+                }
+                return 'Product Deleted Successfully'
+            } catch (error){
+                logger.error(`Product not found: ${product_id}`);
+                throw new Error('Product not found');
+            }
+        },
     updateProductSizeStock: async (_, { product_id, size_type, stock_amount },context) => {
             if (!context.admin) {
                 throw new Error('Unauthorized');
