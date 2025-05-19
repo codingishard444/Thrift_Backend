@@ -62,6 +62,9 @@ const productSchema = new mongoose.Schema({
     },
     imagePath:{
         type:String
+    },
+    brand:{
+        type:String
     }
 });
 

@@ -15,6 +15,7 @@ const typeDefs = `#graphql
         sold_amount: Int!
         Total_stock: Int!
         imagePath: String!
+        brand : String!
     }
 
     type Order {
@@ -64,6 +65,10 @@ const typeDefs = `#graphql
         getOrderByCustomerId: [Order]
         getOrderbyProductId(product_id: String!): [Order]
         getProductbySize(product_id: String!, size_type: String!): Size
+        getProductbyCategory(category_type: String!): [Product]
+        getProductbyBrand(brand: String!): [Product]
+        getTrendingProducts: [Product]
+        getLimitedStockProducts: [Product]
     }
 
     type Mutation {
@@ -77,7 +82,8 @@ const typeDefs = `#graphql
             price: Float!,
             discount_rate: Float,
             category_type: String!,
-            imagePath:String!
+            imagePath:String!,
+            brand:String!
         ): Product
         updateProduct(
             product_id: String!,
