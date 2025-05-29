@@ -16,6 +16,7 @@ const typeDefs = `#graphql
         Total_stock: Int!
         imagePath: String!
         brand : String!
+        description : String!
     }
 
     type Order {
@@ -83,7 +84,8 @@ const typeDefs = `#graphql
             discount_rate: Float,
             category_type: String!,
             imagePath:String!,
-            brand:String!
+            brand:String!,
+            description:String!
         ): Product
         updateProduct(
             product_id: String!,

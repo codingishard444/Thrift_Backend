@@ -69,12 +69,12 @@ const productResolvers ={
     }
     },
     Mutation:{
-    createProduct: async (_, { product_name,gender, price,discount_rate,category_type,imagePath,brand },context) => {
+    createProduct: async (_, { product_name,gender, price,discount_rate,category_type,imagePath,brand,description },context) => {
             if (!context.admin) {
                 throw new Error('Unauthorized');
             }
             try {
-                const product = new Product({ product_name,gender, price,discount_rate,category_type,imagePath,brand });
+                const product = new Product({ product_name,gender, price,discount_rate,category_type,imagePath,brand,description });
                 await product.save();
                 logger.info(`New Product released: ${product_name}`);
                 return product;
