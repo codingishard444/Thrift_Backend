@@ -83,7 +83,7 @@ const productResolvers ={
                 throw new Error('Product insertion failed');
             }
         },
-    updateProduct: async (_, { product_id, product_name, discount_rate },context) => {
+    updateProduct: async (_, { product_id,product_name,gender,price,discount_rate,category_type,imagePath,brand,description },context) => {
             if (!context.admin) {
                 throw new Error('Unauthorized');
             }
@@ -94,7 +94,13 @@ const productResolvers ={
                     throw new Error('Product not found');
                 }
                 product.product_name = product_name
+                product.gender = gender
+                product.price = price
                 product.discount_rate = discount_rate
+                product.category_type = category_type
+                product.imagePath = imagePath
+                product.brand = brand
+                product.description = description
                 await product.save();
                 logger.info(`Product updated: ${product_name}`);
                 return product;

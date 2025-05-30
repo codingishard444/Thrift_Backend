@@ -90,7 +90,13 @@ const typeDefs = `#graphql
         updateProduct(
             product_id: String!,
             product_name: String!,
-            discount_rate: Float,
+            gender: String!,
+            price: Float!,
+            discount_rate: Float!,
+            category_type: String!,
+            imagePath: String!,
+            brand: String!,
+            description: String!
         ): Product
         deleteProduct(product_id:String!):String
         updateProductSizeStock(
