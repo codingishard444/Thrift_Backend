@@ -124,6 +124,7 @@ const typeDefs = `#graphql
         createOrder(product_id:String!,quantity:Int!,size_type:String!): Order
         addToWishList(product_id: String!): WishList
         removeProductfromCart(ShoppingCartID:String!):String
+        removeFromwishList(wishlist_id:String!):String
     }
 `;
 

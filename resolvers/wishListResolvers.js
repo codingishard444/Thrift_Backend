@@ -43,6 +43,18 @@ const wishListResolvers = {
                 logger.error(`Product not found: ${product_id}`);
                 throw new Error('Product not found');
             }
+        },
+        removeFromwishList: async(_, args, context) => {
+            if (!context.user) {
+                throw new Error('Unauthorized');
+            }
+            const { wishlist_id } = args;
+            try {
+                const removedProductwishlist = await wishList.findByIdAndDelete(wishlist_id)
+                return 'Product removed from wishList Successfully'
+            } catch(error){
+                throw new Error('Product not found')
+            }
         }
     }
 }
