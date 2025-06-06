@@ -12,6 +12,7 @@ const User = require('./models/userModel'); // Make sure you have this model
 const mongoose = require('mongoose');
 const { orderResolvers } = require('./resolvers/orderResolvers');
 const { wishListResolvers } = require('./resolvers/wishListResolvers')
+const { shoppingCartResolvers } = require('./resolvers/shoppingCartResolvers')
 const authMiddleware = require('./middleware/authMiddleware');
 const Adminauthenticate = require('./middleware/AdminauthMiddleware');
 const PORT = 9090;
@@ -34,14 +35,16 @@ async function startServer() {
           ...productResolvers.Query,
           ...orderResolvers.Query,
           ...adminResolvers.Query,
-          ...wishListResolvers.Query
+          ...wishListResolvers.Query,
+          ...shoppingCartResolvers.Query
         },
         Mutation: {
           ...userResolvers.Mutation,
           ...productResolvers.Mutation,
           ...orderResolvers.Mutation,
           ...adminResolvers.Mutation,
-          ...wishListResolvers.Mutation
+          ...wishListResolvers.Mutation,
+          ...shoppingCartResolvers.Mutation
         },
       };
     const server = new ApolloServer({

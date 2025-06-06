@@ -24,6 +24,7 @@ const typeDefs = `#graphql
         product_id: String!
         quantity: Int!
         total_price: Float!
+        size_type: String!
     }
     
     type Size {
@@ -43,7 +44,14 @@ const typeDefs = `#graphql
         product_id: String!
         product_name: String!
     }
-
+    type ShoppingCart {
+        customer_id: String!
+        product_id: String!
+        product_name: String!
+        quantity: Int!
+        size_type: String!
+        total_price: Float!
+    }
     type AuthPayload {
         token: String!
         user: User!
@@ -71,6 +79,8 @@ const typeDefs = `#graphql
         getTrendingProducts: [Product]
         getLimitedStockProducts: [Product]
         getProductsizes(product_id:String!): [Size]
+        getAllshoppingCarts:[ShoppingCart]
+        getShoppingcartBycustomerId: [ShoppingCart]
     }
 
     type Mutation {
@@ -110,6 +120,7 @@ const typeDefs = `#graphql
             size_type: String!,
             stock_amount: Int!
         ): Size
+        addProducttoShoppingcart(product_id:String!,quantity:Int!,size_type:String!): ShoppingCart
         createOrder(product_id:String!,quantity:Int!,size_type:String!): Order
         addToWishList(product_id: String!): WishList
     }

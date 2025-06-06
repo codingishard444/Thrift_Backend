@@ -66,6 +66,7 @@ const orderResolvers ={
             const purchasedProduct = await Product.findById(product_id);
             const total_price = purchasedProduct.price*(1 - (purchasedProduct.discount_rate / 100)) * quantity;
             purchasedProduct.sold_amount += quantity;
+            purchasedProduct.Total_stock -= quantity;
             await purchasedProduct.save();
             const size = await Size.findOne({ product_id, size_type });
             size.stock_amount -= quantity;
