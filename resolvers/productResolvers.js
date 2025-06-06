@@ -134,23 +134,23 @@ const productResolvers ={
                 throw new Error('Product not found');
             }
         },
-    updateProductSizeStock: async (_, { product_id, size_type, stock_amount },context) => {
-            if (!context.admin) {
-                throw new Error('Unauthorized');
-            }
-            try {
-                const updatedSizestock = await Size.findOne({ product_id, size_type });
-                updatedSizestock.stock_amount += stock_amount;
-                await updatedSizestock.save();
-                const updatedProducttotalStock = await Product.findById(product_id);
-                updatedProducttotalStock.Total_stock += stock_amount;
-                await updatedProducttotalStock.save();
-                return updatedSizestock;
-            } catch (error) {
-                logger.error(`Product not found: ${product_id}`);
-                throw new Error('Product not found');
-            }
-        },
+    // updateProductSizeStock: async (_, { product_id, size_type, stock_amount },context) => {
+    //         if (!context.admin) {
+    //             throw new Error('Unauthorized');
+    //         }
+    //         try {
+    //             const updatedSizestock = await Size.findOne({ product_id, size_type });
+    //             updatedSizestock.stock_amount += stock_amount;
+    //             await updatedSizestock.save();
+    //             const updatedProducttotalStock = await Product.findById(product_id);
+    //             updatedProducttotalStock.Total_stock += stock_amount;
+    //             await updatedProducttotalStock.save();
+    //             return updatedSizestock;
+    //         } catch (error) {
+    //             logger.error(`Product not found: ${product_id}`);
+    //             throw new Error('Product not found');
+    //         }
+    //     },
     AddProductSize: async (_, { product_id, size_type, stock_amount },context) => {
             if (!context.admin) {
                 throw new Error('Unauthorized');
@@ -158,8 +158,14 @@ const productResolvers ={
             try {
                 const existingSize = await Size.findOne({ product_id, size_type });
                 if (existingSize) {
-                throw new Error('Size already exists');
-                }
+                const updatedSizestock = await Size.findOne({ product_id, size_type });
+                updatedSizestock.stock_amount += stock_amount;
+                await updatedSizestock.save();
+                const updatedProducttotalStock = await Product.findById(product_id);
+                updatedProducttotalStock.Total_stock += stock_amount;
+                await updatedProducttotalStock.save();
+                return updatedSizestock;
+                } else {
                 const size = new Size({ product_id, size_type, stock_amount });
                 await size.save();
                 const updatedProducttotalStock = await Product.findById(product_id);
@@ -167,8 +173,10 @@ const productResolvers ={
                 await updatedProducttotalStock.save();
                 logger.info(`New Size added: ${size_type}`);
                 return size;
+                }
             } catch (error) {
                 logger.error(`Size insertion failed: ${size_type}`);
+                console.error(error);
                 throw new Error('Size insertion failed');
             }
         },
