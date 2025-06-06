@@ -66,6 +66,15 @@ const productResolvers ={
             logger.error('Products not found')
             throw new Error('Products not found')
         }
+    },
+    getProductsizes:async(_,{ product_id })=>{
+        try{
+            const sizes = await Size.find({product_id})
+            return sizes
+        } catch(error){
+            logger.error('Products not found')
+            throw new Error('Products not found')
+        }
     }
     },
     Mutation:{

@@ -70,6 +70,7 @@ const typeDefs = `#graphql
         getProductbyBrand(brand: String!): [Product]
         getTrendingProducts: [Product]
         getLimitedStockProducts: [Product]
+        getProductsizes(product_id:String!): [Size]
     }
 
     type Mutation {
