@@ -110,11 +110,6 @@ const typeDefs = `#graphql
             description: String!
         ): Product
         deleteProduct(product_id:String!):String
-        updateProductSizeStock(
-            product_id: String!,
-            size_type: String!,
-            stock_amount: Int!
-        ): Size
         AddProductSize(
             product_id: String!,
             size_type: String!,
