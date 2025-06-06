@@ -41,6 +41,19 @@ const shoppingCartResolvers={
             console.error(error);
             throw new Error('Failed to add product to shopping cart')
         }
+        },
+        removeProductfromCart: async(_, args,context)=>{
+        if (!context.user) {
+        throw new Error('Unauthorized');
+        }
+        const { ShoppingCartID } = args;
+        try {
+            const removedProduct = await shoppingCart.findByIdAndDelete(ShoppingCartID)
+            return 'Product removed from shopping cart Successfully' 
+        } catch(error){
+            console.error(error);
+            throw new Error('Failed to add product to shopping cart')
+        }
         }
     }
 }

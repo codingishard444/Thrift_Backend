@@ -123,6 +123,7 @@ const typeDefs = `#graphql
         addProducttoShoppingcart(product_id:String!,quantity:Int!,size_type:String!): ShoppingCart
         createOrder(product_id:String!,quantity:Int!,size_type:String!): Order
         addToWishList(product_id: String!): WishList
+        removeProductfromCart(ShoppingCartID:String!):String
     }
 `;
 

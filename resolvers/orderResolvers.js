@@ -1,3 +1,4 @@
+const shoppingCart = require('../models/shoppingCartModel')
 const Order = require('../models/orderModel')
 const logger = require('../logger/authLogger')
 const Product = require('../models/productModel')
@@ -63,6 +64,7 @@ const orderResolvers ={
           } else {
           const { product_id, quantity,size_type } = args;
           try {
+            const shoppingcart = await shoppingCart.findOneAndDelete({ product_id,quantity,size_type })
             const purchasedProduct = await Product.findById(product_id);
             const total_price = purchasedProduct.price*(1 - (purchasedProduct.discount_rate / 100)) * quantity;
             purchasedProduct.sold_amount += quantity;
