@@ -33,12 +33,17 @@ const wishListResolvers = {
             }
             const { product_id } = args;
             try {
+                const existingWishlist = await wishList.findOne({ product_id })
+                if (existingWishlist){
+                    return existingWishlist;
+                } else {
                 const customer_id = context.user.userId;
                 const product = await Product.findById(product_id);
                 const product_name = product.product_name;
                 const newWishlist = new wishList({ customer_id, product_id, product_name });
                 await newWishlist.save();
                 return newWishlist;
+                }
             } catch(error) {
                 logger.error(`Product not found: ${product_id}`);
                 throw new Error('Product not found');
