@@ -25,6 +25,7 @@ const typeDefs = `#graphql
         quantity: Int!
         total_price: Float!
         size_type: String!
+        location: String
     }
     
     type Size {
