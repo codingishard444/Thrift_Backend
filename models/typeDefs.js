@@ -45,6 +45,7 @@ const typeDefs = `#graphql
         product_name: String!
     }
     type ShoppingCart {
+        id:ID!
         customer_id: String!
         product_id: String!
         product_name: String!
