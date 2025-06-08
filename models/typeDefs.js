@@ -116,7 +116,7 @@ const typeDefs = `#graphql
             stock_amount: Int!
         ): Size
         addProducttoShoppingcart(product_id:String!,quantity:Int!,size_type:String!): ShoppingCart
-        createOrder(product_id:String!,quantity:Int!,size_type:String!): Order
+        createOrder(product_id:String!,quantity:Int!,size_type:String!,location:String!): Order
         addToWishList(product_id: String!): WishList
         removeProductfromCart(ShoppingCartID:String!):String
         removeFromwishList(wishlist_id:String!):String

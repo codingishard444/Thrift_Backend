@@ -62,7 +62,7 @@ const orderResolvers ={
           if (!context.user) {
             throw new Error('Unauthorized');
           } else {
-          const { product_id, quantity,size_type } = args;
+          const { product_id, quantity,size_type,location } = args;
           try {
             const shoppingcart = await shoppingCart.findOneAndDelete({ product_id,quantity,size_type })
             const purchasedProduct = await Product.findById(product_id);
@@ -76,7 +76,7 @@ const orderResolvers ={
             const customer_id = context.user.userId;
             logger.info(`Creating order for user: ${customer_id}`);
       
-            const order = new Order({ customer_id, product_id,total_price, quantity,size_type });
+            const order = new Order({ customer_id, product_id,total_price, quantity,size_type,location });
             await order.save();
       
             logger.info(`New Order placed: ${customer_id}, ${product_id}`);
