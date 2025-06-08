@@ -67,6 +67,15 @@ const productResolvers ={
             throw new Error('Products not found')
         }
     },
+    getDiscountedProducts: async() =>{
+        try {
+            const products = await Product.find({discount_rate:{$gt:0}})
+            return products
+        } catch (error){
+            logger.error('Products not found')
+            throw new Error('Products not found')
+        }
+    },
     getProductsizes:async(_,{ product_id })=>{
         try{
             const sizes = await Size.find({product_id})

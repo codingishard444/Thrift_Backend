@@ -80,6 +80,7 @@ const typeDefs = `#graphql
         getProductbyBrand(brand: String!): [Product]
         getTrendingProducts: [Product]
         getLimitedStockProducts: [Product]
+        getDiscountedProducts: [Product]
         getProductsizes(product_id:String!): [Size]
         getAllshoppingCarts:[ShoppingCart]
         getShoppingcartBycustomerId: [ShoppingCart]
