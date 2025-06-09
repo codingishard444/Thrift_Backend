@@ -33,7 +33,8 @@ const wishListResolvers = {
             }
             const { product_id } = args;
             try {
-                const existingWishlist = await wishList.findOne({ product_id })
+                const customer_id = context.user.userId;
+                const existingWishlist = await wishList.findOne({ product_id, customer_id })
                 if (existingWishlist){
                     return existingWishlist;
                 } else {
